@@ -1,0 +1,25 @@
+.github/
+.kluster
+/sql-tht
+paper_content.txt
+2509.00581v1.docx
+.github/instructions/kluster-code-verify.instructions.md
+
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+sql-tht/
+*.egg-info/
+dist/
+build/
+
+# VSCode
+.vscode/

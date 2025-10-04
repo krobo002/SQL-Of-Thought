@@ -1,0 +1,73 @@
+# Configuration file for SQL-of-Thought framework
+
+# LLM Configuration
+llm:
+  default_provider: "anthropic"  # anthropic, openai, huggingface
+  temperature: 0.0
+  max_tokens: 4000
+  timeout: 30
+  
+  # Provider-specific settings
+  anthropic:
+    model: "claude-3-opus-20240229"
+    api_key_env: "ANTHROPIC_API_KEY"
+    
+  openai:
+    model: "gpt-4o"
+    api_key_env: "OPENAI_API_KEY"
+    
+  huggingface:
+    model: "meta-llama/Llama-2-70b-chat-hf"
+    api_key_env: "HUGGINGFACE_API_KEY"
+
+# Pipeline Configuration  
+pipeline:
+  max_correction_attempts: 3
+  enable_cost_tracking: true
+  enable_detailed_logging: true
+  parallel_agent_execution: false
+
+# Database Configuration
+database:
+  default_timeout: 30
+  max_query_length: 10000
+  sqlite_path: "./data/databases/"
+  
+# Error Taxonomy Configuration
+error_taxonomy:
+  enable_dynamic_classification: true
+  confidence_threshold: 0.8
+  
+# Evaluation Configuration
+evaluation:
+  datasets:
+    spider:
+      path: "./data/spider/"
+      dev_file: "dev.json"
+      db_path: "./data/spider/database/"
+    spider_realistic:
+      path: "./data/spider_realistic/"
+      dev_file: "dev.json"
+    spider_syn:
+      path: "./data/spider_syn/"
+      dev_file: "dev.json"
+      
+  metrics:
+    - execution_accuracy
+    - valid_sql_rate
+    - cost_per_query
+    
+# Streamlit Configuration
+streamlit:
+  page_title: "SQL-of-Thought Framework"
+  page_icon: "🧠"
+  layout: "wide"
+  initial_sidebar_state: "expanded"
+  
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "./logs/sql_of_thought.log"
+  max_bytes: 10485760  # 10MB
+  backup_count: 5
