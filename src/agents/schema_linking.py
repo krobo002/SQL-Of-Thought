@@ -1,6 +1,8 @@
 from src.agents.base import BaseAgent
 from src.llm.base import BaseLLM
 import json
+from prompts.agent_prompts import AgentPrompts
+import os
 
 class SchemaLinkingAgent(BaseAgent):
     """
@@ -38,28 +40,7 @@ class SchemaLinkingAgent(BaseAgent):
 
         schema_str = "\n".join(schema_representation)
 
-        prompt = f"""
-Given the following database schema:
-{schema_str}
-
-And the natural language question:
-"{question}"
-
-Identify the relevant tables and columns for answering this question.
-Also, identify any primary keys, foreign keys, and join relationships that might be needed.
-
-Please provide the output in a JSON format with the following keys:
-- "tables": A list of relevant table names.
-- "columns": A list of relevant column names.
-- "relationships": A list of strings describing join relationships (e.g., "table1.column1 = table2.column2").
-
-Example output:
-{{
-  "tables": ["employees", "departments"],
-  "columns": ["employees.name", "departments.name", "employees.department_id"],
-  "relationships": ["employees.department_id = departments.id"]
-}}
-"""
+        prompt = AgentPrompts.schema_linking_agent_prompt(schema_str=schema_str, question=question)
         return prompt
 
     def _parse_response(self, response: str) -> dict:
@@ -80,3 +61,16 @@ Example output:
                 "columns": [],
                 "relationships": []
             }
+
+
+def main():
+    # Path to the JSON file
+    json_path = os.path.join(os.path.dirname(__file__), '..', 'row_store', 'integration', 'content.json')
+
+    # Read and parse the JSON file
+    with open(json_path, 'r') as f:
+        db_schema = json.load(f)
+
+    print("Loaded db_schema:", db_schema)
+
+    

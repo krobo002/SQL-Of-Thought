@@ -1,5 +1,6 @@
 import mysql.connector
 from decouple import config
+import json
 
 def get_mysql_connection():
     """
@@ -59,6 +60,8 @@ def get_schema(db_name):
             
             schema = {}
             for table_name in tables:
+                if "outbox" in table_name.lower():
+                    continue
                 cursor.execute(f"SHOW CREATE TABLE {table_name}")
                 create_table_statement = cursor.fetchone()[1]
                 schema[table_name] = create_table_statement
@@ -81,9 +84,16 @@ def main():
     # else:
     #     print("Connection failed.")
 
-    query = "SELECT * FROM reference_asset limit 10;"
-    res = execute_query(query=query)
-    print(res)
+    # query = "SELECT * FROM reference_asset limit 10;"
+    # res = execute_query(query=query)
+    # print(res)
+
+    db_name = "row_store$integration$content"
+    db_schema = get_schema(db_name=db_name)
+    with open(f"{db_name}.json", "w") as f:
+        json.dump(db_schema, f, indent=4)
+    print("Database schema saved to db_schema.json")
+    print(db_schema)
 
     # db = "row_store$integration$content"
     # res = get_schema(db)
