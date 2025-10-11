@@ -5,19 +5,54 @@ Provides unified interfaces for different LLM providers (Anthropic, OpenAI, Hugg
 with consistent API, cost tracking, and error handling.
 """
 
-from .base import BaseLLMInterface
-from .anthropic_interface import AnthropicInterface
-from .openai_interface import OpenAIInterface
-from .huggingface_interface import HuggingFaceInterface
-from .llm_factory import LLMFactory
+from .base import BaseLLM
+
+# Lazy imports to avoid dependency issues
+def get_anthropic_interface():
+    from .anthropic_interface import AnthropicInterface
+    return AnthropicInterface
+
+def get_openai_interface():
+    from .openai_interface import OpenAIInterface
+    return OpenAIInterface
+
+def get_ollama_interface():
+    from .ollama_interface import OllamaInterface
+    return OllamaInterface
+
+def get_llm_factory():
+    from .llm_factory import LLMFactory
+    return LLMFactory
+
+# For backward compatibility, still expose direct imports
+try:
+    from .anthropic_interface import AnthropicInterface
+except ImportError:
+    AnthropicInterface = None
+
+try:
+    from .openai_interface import OpenAIInterface
+except ImportError:
+    OpenAIInterface = None
+
+try:
+    from .ollama_interface import OllamaInterface
+except ImportError:
+    OllamaInterface = None
+
+try:
+    from .llm_factory import LLMFactory
+except ImportError:
+    LLMFactory = None
 
 __all__ = [
-    "BaseLLMInterface",
+    "BaseLLM",
     "AnthropicInterface", 
     "OpenAIInterface",
-    "HuggingFaceInterface",
-    "LLMFactory"
+    "OllamaInterface",
+    "LLMFactory",
+    "get_anthropic_interface",
+    "get_openai_interface", 
+    "get_ollama_interface",
+    "get_llm_factory"
 ]
-
-# Main interface class for backward compatibility
-LLMInterface = LLMFactory

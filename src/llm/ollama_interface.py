@@ -3,7 +3,7 @@ import os
 
 import ollama
 from typing import Any, Dict, List, Union
-from base import BaseLLM
+from .base import BaseLLM
 
 
 class OllamaLLM(BaseLLM):
@@ -55,6 +55,9 @@ def main():
     }
     response = llm.invoke(messages, config=config)
     print(response)
+
+# Alias for consistency with other interfaces
+OllamaInterface = OllamaLLM
 
 if __name__ == "__main__":
     main()
