@@ -2,12 +2,16 @@
 
 # LLM Configuration
 llm:
-  default_provider: "anthropic"  # anthropic, openai, huggingface
+  default_provider: "ollama"  # ollama, anthropic, openai
   temperature: 0.0
   max_tokens: 4000
   timeout: 30
   
   # Provider-specific settings
+  ollama:
+    model: "llama3.2"
+    base_url: "http://localhost:11434"
+  
   anthropic:
     model: "claude-3-opus-20240229"
     api_key_env: "ANTHROPIC_API_KEY"
@@ -15,10 +19,6 @@ llm:
   openai:
     model: "gpt-4o"
     api_key_env: "OPENAI_API_KEY"
-    
-  huggingface:
-    model: "meta-llama/Llama-2-70b-chat-hf"
-    api_key_env: "HUGGINGFACE_API_KEY"
 
 # Pipeline Configuration  
 pipeline:

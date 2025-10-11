@@ -1,7 +1,7 @@
 from src.agents.base import BaseAgent
 from src.llm.base import BaseLLM
 import json
-from prompts.agent_prompts import AgentPrompts
+from src.prompts.agent_prompts import AgentPrompts
 import os
 
 class SchemaLinkingAgent(BaseAgent):
